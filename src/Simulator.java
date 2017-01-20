@@ -2,22 +2,25 @@ import java.util.Random;
 
 public class Simulator {
 
+    // Fields voor de class Simulator.
 	private static final String AD_HOC = "1";
 	private static final String PASS = "2";
 	
-	
+	// Verschillende CarQueues worden hier aangemaakt.
 	private CarQueue entranceCarQueue;
     private CarQueue entrancePassQueue;
     private CarQueue paymentCarQueue;
     private CarQueue exitCarQueue;
     private SimulatorView simulatorView;
 
+    // Fields voor de tijd.
     private int day = 0;
     private int hour = 0;
     private int minute = 0;
 
     private int tickPause = 100;
 
+    // Het aantal "arrivals".
     int weekDayArrivals= 100; // average number of arriving cars per hour
     int weekendArrivals = 200; // average number of arriving cars per hour
     int weekDayPassArrivals= 50; // average number of arriving cars per hour
@@ -27,6 +30,11 @@ public class Simulator {
     int paymentSpeed = 7; // number of cars that can pay per minute
     int exitSpeed = 5; // number of cars that can leave per minute
 
+    /**
+     * Constructor voor de class simulator.
+     * De constructor maakt een nieuwe CarQueue voor de ingang, de pasjes, het betalen en voor de uitgang.
+     * Er word ook een nieuwe SimulatorView aangemaakt, met de opgegeven hoeveelheid verdiepingen, rijen en plaatsen.
+     */
     public Simulator() {
         entranceCarQueue = new CarQueue();
         entrancePassQueue = new CarQueue();
@@ -41,6 +49,9 @@ public class Simulator {
         }
     }
 
+    /**
+     * Timetick; zodat de simulatie werkt (mutator).
+     */
     private void tick() {
     	advanceTime();
     	handleExit();
@@ -54,6 +65,9 @@ public class Simulator {
     	handleEntrance();
     }
 
+    /**
+     * Zorgt ervoor dat de "klok" goed loopt (eg. niet meer dan 60 minuten of meer dan 24 uur, na 24 uur day++)(mutator).
+     */
     private void advanceTime(){
         // Advance the time by one minute.
         minute++;
@@ -82,13 +96,18 @@ public class Simulator {
         carsPaying();
         carsLeaving();
     }
-    
+
+    /**
+     * Doet een tick en update daarna de view. Verandert dus de situatie en daarna de weergave.
+     */
     private void updateViews(){
     	simulatorView.tick();
         // Update the car park view.
         simulatorView.updateView();	
     }
-    
+    /**
+     * De autos die aankomen.
+     */
     private void carsArriving(){
     	int numberOfCars=getNumberOfCars(weekDayArrivals, weekendArrivals);
         addArrivingCars(numberOfCars, AD_HOC);    	
@@ -96,37 +115,47 @@ public class Simulator {
         addArrivingCars(numberOfCars, PASS);    	
     }
 
+    /**
+     * Haalt autos aan het begin van de rij weg en wijst ze een parkeerplaats toe.
+     */
     private void carsEntering(CarQueue queue){
         int i=0;
         // Remove car from the front of the queue and assign to a parking space.
     	while (queue.carsInQueue()>0 && 
     			simulatorView.getNumberOfOpenSpots()>0 && 
     			i<enterSpeed) {
-            Car car = queue.removeCar();
-            Location freeLocation = simulatorView.getFirstFreeLocation();
-            simulatorView.setCarAt(freeLocation, car);
-            i++;
+            Car car = queue.removeCar();        // deze regel haalt de auto uit de queue.
+            Location freeLocation = simulatorView.getFirstFreeLocation();       //deze haalt de eerste vrije plek op.
+            simulatorView.setCarAt(freeLocation, car);      //deze zet de auto daar daadwerkelijk neer.
+            i++;                                //increment, want op naar de volgende auto.
         }
     }
-    
+
+    /**
+     * Zet autos die uit willen rijden in de betaalrij.
+     */
     private void carsReadyToLeave(){
         // Add leaving cars to the payment queue.
-        Car car = simulatorView.getFirstLeavingCar();
+        Car car = simulatorView.getFirstLeavingCar();       //pakt auto vooraan de rij van vertrekkende autos.
         while (car!=null) {
-        	if (car.getHasToPay()){
-	            car.setIsPaying(true);
-	            paymentCarQueue.addCar(car);
+        	if (car.getHasToPay()){                 //als de auto nog moet betalen
+	            car.setIsPaying(true);              //gaat de auto nu betalen (want isPaying is nu true)
+	            paymentCarQueue.addCar(car);        //auto word toegevoegd aan de betaalrij.
         	}
-        	else {
-        		carLeavesSpot(car);
+        	else {                                  //als de auto niet meer hoeft te betalen
+        		carLeavesSpot(car);                 //rij uit.
         	}
             car = simulatorView.getFirstLeavingCar();
         }
     }
 
+    /**
+     * Laat autos betalen.
+     */
     private void carsPaying(){
         // Let cars pay.
     	int i=0;
+    	//wanneer er autos in de betaalrij staan, en de paymentSpeed groter is dan i, gaat er een auto uit de betaalrij.
     	while (paymentCarQueue.carsInQueue()>0 && i < paymentSpeed){
             Car car = paymentCarQueue.removeCar();
             // TODO Handle payment.
@@ -134,16 +163,25 @@ public class Simulator {
             i++;
     	}
     }
-    
+
+    /**
+     * Laat autos uitrijden.
+     */
     private void carsLeaving(){
         // Let cars leave.
     	int i=0;
+    	//wanneer er autos in de uitgang rij staan, en de existspeed groeter is dan i zal de auto uitrijden.
     	while (exitCarQueue.carsInQueue()>0 && i < exitSpeed){
             exitCarQueue.removeCar();
             i++;
     	}	
     }
-    
+
+    /**
+     * Haalt het aantal autos op.
+     * @param weekDay, weekend
+     * @return int waarde voor het aantal autos.
+     */
     private int getNumberOfCars(int weekDay, int weekend){
         Random random = new Random();
 
@@ -173,10 +211,13 @@ public class Simulator {
             break;	            
     	}
     }
-    
+
+    /**
+     * Auto verlaat zijn plek.
+     */
     private void carLeavesSpot(Car car){
-    	simulatorView.removeCarAt(car.getLocation());
-        exitCarQueue.addCar(car);
+    	simulatorView.removeCarAt(car.getLocation());       //verwijdert de auto van zijn locatie in de simulatie.
+        exitCarQueue.addCar(car);                           //plaatst de auto in de uitgang rij.
     }
 
 }

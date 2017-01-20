@@ -9,6 +9,12 @@ public class SimulatorView extends JFrame {
     private int numberOfOpenSpots;
     private Car[][][] cars;
 
+    /**
+     * Constructor van de class SimulatorView.
+     * @param numberOfFloors het aantal verdiepingen.
+     * @param numberOfRows het aantal rijen.
+     * @param numberOfPlaces het aantal plekken.
+     */
     public SimulatorView(int numberOfFloors, int numberOfRows, int numberOfPlaces) {
         this.numberOfFloors = numberOfFloors;
         this.numberOfRows = numberOfRows;
@@ -27,26 +33,49 @@ public class SimulatorView extends JFrame {
         updateView();
     }
 
+    /**
+     * Deze method update de view.
+     */
     public void updateView() {
         carParkView.updateView();
     }
-    
+
+    /**
+     * Vraag op hoeveel verdiepingen de parkeergarage heeft.
+     * @return numberOfFloors (int)
+     */
 	public int getNumberOfFloors() {
         return numberOfFloors;
     }
 
+    /**
+     * Vraag op hoeveel rijen de parkeergarage heeft.
+     * @return numberOfRows (int)
+     */
     public int getNumberOfRows() {
         return numberOfRows;
     }
 
+    /**
+     * Vraag op hoeveel plaatsen de parkeergarage heeft.
+     * @return numberOfPlaces (int)
+     */
     public int getNumberOfPlaces() {
         return numberOfPlaces;
     }
 
+    /**
+     * Vraag op hoeveel beschikbare plaatsen de parkeergarage heeft.
+     * @return numberOfOpenSpots (int)
+     */
     public int getNumberOfOpenSpots(){
     	return numberOfOpenSpots;
     }
-    
+
+    /**
+     * Vraag een auto op een bepaalde plek op.
+     * @return cars.
+     */
     public Car getCarAt(Location location) {
         if (!locationIsValid(location)) {
             return null;
@@ -54,6 +83,11 @@ public class SimulatorView extends JFrame {
         return cars[location.getFloor()][location.getRow()][location.getPlace()];
     }
 
+    /**
+     * Plaats een auto op een bepaalde locatie.
+     * @return false = de plek is bezet of bestaat niet.
+     * @return true = de plek is beschikbaar, auto word geplaatst.
+     */
     public boolean setCarAt(Location location, Car car) {
         if (!locationIsValid(location)) {
             return false;
@@ -68,6 +102,9 @@ public class SimulatorView extends JFrame {
         return false;
     }
 
+    /**
+     * Verwijder een auto van een bepaalde locatie.
+     */
     public Car removeCarAt(Location location) {
         if (!locationIsValid(location)) {
             return null;
@@ -82,6 +119,9 @@ public class SimulatorView extends JFrame {
         return car;
     }
 
+    /**
+     * Pakt de dichtstbijzijnde lege parkeerplek.
+     */
     public Location getFirstFreeLocation() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
             for (int row = 0; row < getNumberOfRows(); row++) {
@@ -96,6 +136,9 @@ public class SimulatorView extends JFrame {
         return null;
     }
 
+    /**
+     * Pakt de auto vooraan de uitgang rij.
+     */
     public Car getFirstLeavingCar() {
         for (int floor = 0; floor < getNumberOfFloors(); floor++) {
             for (int row = 0; row < getNumberOfRows(); row++) {
@@ -125,6 +168,9 @@ public class SimulatorView extends JFrame {
         }
     }
 
+    /**
+     * Checkt of een locatie valid is (heeft de parkeergarage zoveel plekken?)
+     */
     private boolean locationIsValid(Location location) {
         int floor = location.getFloor();
         int row = location.getRow();
@@ -134,7 +180,8 @@ public class SimulatorView extends JFrame {
         }
         return true;
     }
-    
+
+
     private class CarParkView extends JPanel {
         
         private Dimension size;
