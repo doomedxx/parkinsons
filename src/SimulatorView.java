@@ -22,6 +22,7 @@ public class SimulatorView extends JFrame {
         contentPane.add(carParkView, BorderLayout.CENTER);
         pack();
         setVisible(true);
+        setSize(600,800);
 
         updateView();
     }

@@ -4,7 +4,7 @@
 public class Startup {
     public static void main(String[] args) {
 
-        SimulatorView view = new SimulatorView(200, 200, 200);
+        SimulatorView view = new SimulatorView(20, 5, 20);
         view.setVisible(true);
 
 
