@@ -3,8 +3,10 @@
  */
 public class Startup {
     public static void main(String[] args) {
-        Simulator simulator = new Simulator();
-        SimulatorView view = new SimulatorView(8, 2, 1);
+
+        SimulatorView view = new SimulatorView(200, 200, 200);
         view.setVisible(true);
+
+
     }
 }
