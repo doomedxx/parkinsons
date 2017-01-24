@@ -8,6 +8,7 @@ public class SimulatorView extends JFrame {
     private int numberOfPlaces;
     private int numberOfOpenSpots;
     private Car[][][] cars;
+    private JButton updateButton;
 
     /**
      * Constructor van de class SimulatorView.
@@ -29,6 +30,8 @@ public class SimulatorView extends JFrame {
         pack();
         setVisible(true);
         setSize(600,800);
+
+        JButton updateButton = new JButton("Update");
 
         updateView();
     }

@@ -1,4 +1,7 @@
 import java.util.Random;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.Timer;
 
 public class Simulator {
 
@@ -19,12 +22,16 @@ public class Simulator {
     private int minute = 0;
 
     private int tickPause = 100;
+    protected Timer tickTimer;
 
     // Het aantal "arrivals".
     int weekDayArrivals= 100; // average number of arriving cars per hour
     int weekendArrivals = 200; // average number of arriving cars per hour
     int weekDayPassArrivals= 50; // average number of arriving cars per hour
     int weekendPassArrivals = 5; // average number of arriving cars per hour
+
+    int maxTicks = 10000; // sets the maximum amount of ticks until the system stops working
+    int tickAmount = 0; // sets the amount of ticks executed by the simulator
 
     int enterSpeed = 3; // number of cars that can enter per minute
     int paymentSpeed = 7; // number of cars that can pay per minute
@@ -41,27 +48,27 @@ public class Simulator {
         paymentCarQueue = new CarQueue();
         exitCarQueue = new CarQueue();
         simulatorView = new SimulatorView(3, 6, 30);
-    }
 
-    public void run() {
-        for (int i = 0; i < 10000; i++) {
-            tick();
+
+        ///// TIMER START
+        tickTimer = new Timer(200, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    tickTimer.setDelay(200); // Bepaald de snelheid per tick in miliseconde
+                    if (tickAmount <= maxTicks) {
+                            tick();
+                            System.out.println("Tick!"); // Debugging reasons
+                        } }
+                    });
         }
-    }
+        /////   TIMER END
 
     /**
      * Timetick; zodat de simulatie werkt (mutator).
      */
-    private void tick() {
+        private void tick() {
     	advanceTime();
     	handleExit();
     	updateViews();
-    	// Pause.
-        try {
-            Thread.sleep(tickPause);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     	handleEntrance();
     }
 
