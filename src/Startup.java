@@ -1,8 +1,8 @@
 public class Startup {
     public static void main(String[] args) {
 
-        Simulator simulator = new Simulator();
-        simulator.tickTimer.start();
+        Controller.SimulatorController simulator = new Controller.SimulatorController();
+        simulator.startTimer();
 
 
     }
