@@ -9,14 +9,11 @@ public class SimulatorView extends JFrame {
     private int numberOfRows;
     private int numberOfPlaces;
     private int numberOfOpenSpots;
-    private JButton pauseButton;
-    private JButton resumeButton;
 
     private Controller.Location location;
     private Controller.Car car;
     private Controller.SimulatorController simulatorController;
     private Model.SimulatorModel simulatorModel;
-
     private Controller.Car[][][] cars;
     /**
      * Constructor van de class SimulatorView.
@@ -40,7 +37,6 @@ public class SimulatorView extends JFrame {
         setSize(600, 800);
         setTitle("Parkin'Sons Parkeer Simulator v.00002");
         setLayout(null);
-        initComponents();
         updateView();
     }
 
@@ -129,30 +125,5 @@ public class SimulatorView extends JFrame {
             return false;
         }
         return true;
-    }
-
-    private void initComponents() {  // Vult de Frame met alle toeters en bellen
-        this.setLayout(null);
-        pauseButton = new JButton("Pause");
-        add(pauseButton);
-        pauseButton.setBounds(170, 70, 130, 10);
-
-        resumeButton = new JButton("Resume");
-        add(resumeButton);
-        resumeButton.setBounds(70, 70, 130, 10);
-
-        // PAUZE BUTTON
-        pauseButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                simulatorController.stopTimer();
-            }
-        });
-
-        // RESUME BUTTON
-        pauseButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                simulatorController.startTimer();
-            }
-        });
     }
 }
