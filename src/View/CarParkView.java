@@ -11,6 +11,7 @@ public class CarParkView extends JPanel {
     private Dimension size;
     private Image carParkImage;
     private View.SimulatorView simulatorview;
+    private Model.SimulatorModel simulatorModel;
     private Controller.Location Location;
     private Controller.Car Car;
 
@@ -54,11 +55,11 @@ public class CarParkView extends JPanel {
             carParkImage = createImage(size.width, size.height);
         }
         Graphics graphics = carParkImage.getGraphics();
-        for(int floor = 0; floor < getNumberOfFloors(); floor++) {
-            for(int row = 0; row < getNumberOfRows(); row++) {
-                for(int place = 0; place < getNumberOfPlaces(); place++) {
+        for(int floor = 0; floor < simulatorModel.getNumberOfFloors(); floor++) {
+            for(int row = 0; row < simulatorModel.getNumberOfRows(); row++) {
+                for(int place = 0; place < simulatorModel.getNumberOfPlaces(); place++) {
                     Controller.Location location = new Controller.Location(floor, row, place);
-                    Controller.Car car = getCarAt(location);
+                    Controller.Car car = simulatorModel.getCarAt(location);
                     Color color = car == null ? Color.white : car.getColor();
                     drawPlace(graphics, location, color);
                 }

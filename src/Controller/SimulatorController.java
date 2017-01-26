@@ -73,10 +73,10 @@ public class SimulatorController {
      * Timetick; zodat de simulatie werkt (mutator).
      */
         private void tick() {
-    	advanceTime();
-    	handleExit();
-    	updateViews();
-    	handleEntrance();
+        advanceTime();
+        handleExit();
+        updateViews();
+        handleEntrance();
     }
 
     public void stopTimer() { // Schakeld de tick timer uit
