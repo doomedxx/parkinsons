@@ -10,6 +10,9 @@ public class CarParkView extends JPanel {
 
     private Dimension size;
     private Image carParkImage;
+    private View.SimulatorView simulatorview;
+    private Controller.Location Location;
+    private Controller.Car Car;
 
     /**
      * Constructor for objects of class CarPark
@@ -54,8 +57,8 @@ public class CarParkView extends JPanel {
         for(int floor = 0; floor < getNumberOfFloors(); floor++) {
             for(int row = 0; row < getNumberOfRows(); row++) {
                 for(int place = 0; place < getNumberOfPlaces(); place++) {
-                    Location location = new Location(floor, row, place);
-                    Car car = getCarAt(location);
+                    Controller.Location location = new Controller.Location(floor, row, place);
+                    Controller.Car car = getCarAt(location);
                     Color color = car == null ? Color.white : car.getColor();
                     drawPlace(graphics, location, color);
                 }
@@ -67,7 +70,7 @@ public class CarParkView extends JPanel {
     /**
      * Paint a place on this car park view in a given color.
      */
-    private void drawPlace(Graphics graphics, Location location, Color color) {
+    private void drawPlace(Graphics graphics, Controller.Location location, Color color) {
         graphics.setColor(color);
         graphics.fillRect(
                 location.getFloor() * 260 + (1 + (int)Math.floor(location.getRow() * 0.5)) * 75 + (location.getRow() % 2) * 20,
