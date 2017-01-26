@@ -16,7 +16,6 @@ public class SimulatorModel {
     private int numberOfOpenSpots;
 
 
-
     public boolean setCarAt(Controller.Location location, Controller.Car car) {
         if (!locationIsValid(location)) {
             return false;
